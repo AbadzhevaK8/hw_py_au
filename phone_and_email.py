@@ -30,7 +30,10 @@ for groups in phone_regex.findall(text):
 for groups in email_regex.findall(text):
     matches.append(groups[0])
 
-# TODO: скопировать результаты в буфер обмена
-
-# дома допишу
-# Если спать не упаду
+# скопировать результаты в буфер обмена
+if len(matches) > 0:
+    pyperclip.copy('\n'.join(matches))
+    print('Скопировано в буфер обмена:')
+    print('\n'.join(matches))
+else:
+    print('Телефонные номера и адреса электронной почты не обнаружены.')
