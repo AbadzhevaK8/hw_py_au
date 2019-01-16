@@ -1,2 +1,0 @@
-myHeroInventory.py
-pause

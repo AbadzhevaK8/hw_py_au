@@ -1,2 +1,0 @@
-fru.py
-pause
