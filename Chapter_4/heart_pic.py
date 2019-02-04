@@ -10,7 +10,7 @@ heart = [['.', '.', '.', '.', '.', '.'],
 
 heart_pic = ''
 for i in range(6):
-  for j in range(len(heart)):
-    heart_pic = heart_pic + heart[j][i] + ' '
-  print(heart_pic)
-  heart_pic = ''
+    for j in range(len(heart)):
+        heart_pic = heart_pic + heart[j][i] + ' '
+    print(heart_pic)
+    heart_pic = ''
