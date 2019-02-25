@@ -1,27 +1,3 @@
-tableData = [['apples', 'oranges', 'cherries', 'banana'],
-             ['Alice', 'Bob', 'Carol', 'David'],
-             ['dogs', 'cats', 'moose', 'goose']]
-
-def printTable(listName):
-    colWidths = [0] * len(listName)
-    colWidthsResult = 0
-    for k in range(listName):
-        for i in range(listName[k]):
-            if len(colWidths[k]) < len(listName[k][i]):
-                colWidths[k] = listName[k][i]
-
-    for j in range(colWidths):
-        if len(colWidthsResult) < len(colWidths[j]):
-            colWidthsResult = len(colWidths[j]
-            return colWidthsResult
-
-for i in range(tableData):
-  for j in range(len(tableData[i])):
-    print(tableData[j][i])
-
-
-#===========================================
-
 #!/usr/bin/python3
 # you can think of x and y as coordinates
 
