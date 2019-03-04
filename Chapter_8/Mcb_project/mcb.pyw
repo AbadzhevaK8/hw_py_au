@@ -8,7 +8,8 @@ import shelve
 import pyperclip
 import sys
 
-mbcShelf = shelve.open('mcb')
+mcbShelf = shelve.open('mcb')
+
 # Сохранить содержимое буфера обмена.
 if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
     mcbShelf[sys.argv[2]] = pyperclip.paste()
@@ -19,4 +20,4 @@ elif len(sys.argv) == 2:
     elif sys.argv[1] in mcbShelf:
         pyperclip.copy(mcbShelf[sys.argv[1]])
 
-mbcShelf.close()
+mcbShelf.close()
