@@ -25,4 +25,23 @@ for quizNum in range(35):
     states = list(capitals.keys())
     random.shuffle(states)
 
-    # TODO: Организовать цикл по всем 50 штатам, создавая вопрос для каждого из них.
+    # Организовать цикл по всем 50 штатам, создавая вопрос для каждого из них.
+    for questionNum in range(50):
+        # Получение правильных и неправильных ответов.
+        correctAnswer = capitals[states[questionNum]]
+        wrongAnswers = list(capitals.values())
+        del wrongAnswers[wrongAnswers.index(correctAnswer)]
+        wrongAnswers = random.sample(wrongAnswers, 3)
+        answerOptions = wrongAnswers + [correctAnswer]
+        random.shuffle(answerOptions)
+
+        # Записать варианты вопросов и ответов в файл билета.
+        quizFile.write('%s. Выберите столицу штата %s.\n' % (questionNum + 1, states[questionNum]))
+        for i in range(4):
+            quizFile.write(' %s. %s\n' % ('ABCD'[i], answerOptions[i]))
+        quizFile.write('\n')
+
+        # Записать ключ ответа в файл.
+        answerKeyFile.write('%s. %s\n' % (questionNum +1, 'ABCD'[answerOptions.index(correctAnswer)]))
+    quizFile.close()
+    answerKeyFile.close()
