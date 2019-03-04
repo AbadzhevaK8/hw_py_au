@@ -36,12 +36,14 @@ for quizNum in range(35):
         random.shuffle(answerOptions)
 
         # Записать варианты вопросов и ответов в файл билета.
-        quizFile.write('%s. Выберите столицу штата %s.\n' % (questionNum + 1, states[questionNum]))
+        quizFile.write('%s. Выберите столицу штата %s.\n' %
+                       (questionNum + 1, states[questionNum]))
         for i in range(4):
             quizFile.write(' %s. %s\n' % ('ABCD'[i], answerOptions[i]))
         quizFile.write('\n')
 
         # Записать ключ ответа в файл.
-        answerKeyFile.write('%s. %s\n' % (questionNum +1, 'ABCD'[answerOptions.index(correctAnswer)]))
+        answerKeyFile.write('%s. %s\n' % (
+            questionNum + 1, 'ABCD'[answerOptions.index(correctAnswer)]))
     quizFile.close()
     answerKeyFile.close()
