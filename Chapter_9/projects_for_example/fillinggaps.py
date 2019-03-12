@@ -1,6 +1,5 @@
 #! python3
-# fillinggaps.py - searches a directory for gaps in a numbering convention. Renames files after the gap
-# to close the gap.
+# fillinggaps.py - ищет в папке нарушения в нумерации имен файлов. Переименовывает файлы чтобы исправить последовательность.
 
 import os
 import sys
@@ -8,16 +7,16 @@ import re
 import pprint
 import shutil
 
-# Get prefix from user
-userPrefix = input('Enter prefix to search: ')
+# получаем префикс от пользователя
+userPrefix = input('Введите префикс для поиска: ')
 
 
-# Create number suffix regex
+# создаем regex для номерного суффикса
 numRegex = re.compile('({})(?P<num>\\d+)(\\..*)'.format(userPrefix), re.IGNORECASE)
 
-# Get directory to search from user
+# запрашиваем папку для поиска
 while True:
-    searchPath = input('Enter the directory path to search:\n')
+    searchPath = input('Укажите путь к папке для поиска:\n')
     if searchPath.lower() == 'quit':
         sys.exit(1)
     else:
