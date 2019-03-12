@@ -7,5 +7,8 @@ def boxPrint(symbol, width, height):
         raise Exception('Переменная symbol должна быть односимвольной строкой.')
     if width <= 2:
         raise Exception('Значение width должно превышать 2.')
-    if condition:
-        pass
+    if height <= 2:
+        raise Exception('Значение height должно превышать 2.')
+    for i in range(height - 2):
+        print(symbol + (' ' * (width - 2)) + symbol)
+    print(symbol * width)
