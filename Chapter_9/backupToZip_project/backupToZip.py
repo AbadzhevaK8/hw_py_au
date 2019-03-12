@@ -1,42 +1,60 @@
 #! python3
-#! /usr/bin/python3
-# -*- coding: utf-8 -*-
-# backupToZip - копирует папку вместе со всем ее содержимым в zip-файл с инкременируемым номером копии файла.
+# selectivecopy.py - copies all files of a specified extension (i.e. .jpg or .pdf) through a directory tree to a
+# given directory.
 
-import zipfile
 import os
+import shutil
+import pprint
+
+# TODO: Check for files paths that would exceed maximum length in future version.
+
+# Get the extension from the user
+extensionInput = input('Enter the extension (ex: .pdf): ').strip('.')
+
+# Get the source and destination folder from the user
+while True:
+    sourceInput = os.path.abspath(input('Enter the path of the folder to copy:\n'))
+    if os.path.exists(sourceInput):
+        break
+    else:
+        print('The path entered was not valid. Try again. Press ctrl-c to quit')
+        continue
+while True:
+    destinationInput = os.path.abspath(input('Enter the path of the destination:\n'))
+    if os.path.exists(destinationInput):
+        break
+    else:
+        print('The path entered was not valid. Try again. Press ctrl-c to quit')
+        continue
+
+# Build list of file paths to copy
+copyList = []
+
+for foldername, subfolders, filenames in os.walk(sourceInput):
+    for filename in filenames:
+        if str(filename).endswith(extensionInput):
+            copyList.append(os.path.join(foldername, filename))
+
+# Loop through list moving files.
+print('Copying these files:')
+pprint.pprint(copyList, width=200)
 
 
-def backupToZip(folder):
-    
-    # создание резервной копии всего содержимого папки "folder" в виде архива.
-    folder = os.path.abspath(folder)  # абсолютный путь к папке
+# Get the number and size of all files to be copied (not required in project description)
+totalSize = 0
+for file in copyList:
+    totalSize += os.path.getsize(file)
+print(str(len(copyList)) + ' files will be copied. {} KB Total Do you wish to continue? [y/n]'.format(round(
+    totalSize/1000, 0
+)))
+confirmInput = input()
 
-    # определяем,как надо назвать архив
-    number = 1
-    while True:
-        zipFileName = os.path.basename(folder) + '_' + str(number) + '.zip'
-        if not os.path.exists(zipFileName):
-            break
-        number = number + 1
-
-    # создаем файл архива
-    print('Создается файл %s...' % (zipFileName))
-    backupZip = zipfile.ZipFile(zipFileName, 'w')
-
-    # добавить папку со всем содержимым в архив
-    for foldername, subfolders, filenames in os.walk(folder):
-        print('Добавление файлов из папки %s...' % (foldername))
-        # добавить в архив текущую папку.
-        backupZip.write(foldername)
-        # в архив все файлы из данной папки.
-        for filename in filenames:
-            newBase = os.path.basename(folder) + '_'
-            if filename.startswith(newBase) and filename.endswith('.zip'):
-                continue  # не создавать резервные копии самих архивов.
-            backupZip.write(os.path.join(foldername, filename))
-    backupZip.close()
-    print('Готово.')
-
-
-backupToZip('C:\\Users\\AbadzhevaE\\Downloads\\hw_py_au\\Chapter_9')
+if confirmInput.lower() in ['y', 'yes']:
+    # Copy the list of files to destination
+    for file in copyList:
+        shutil.copy(file, destinationInput)
+    print('Done.')
+elif confirmInput.lower() in ['n', 'no']:
+    print('Canceled. No files were copied.')
+else:
+    print('Input not understood. Cancelling operation.')
