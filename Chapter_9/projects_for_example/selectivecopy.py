@@ -1,59 +1,34 @@
 #! python3
-# selectivecopy.py - копирует все файлы с указанным расширением (например, .jpg или .pdf) через дерево каталогов в данный каталог.
+# LargeFileDetection.py - walks through a directory looking for files larger than 100MB and prints them to the screen.
 
 import os
-import shutil
-import pprint
+import sys
 
-# TODO: Проверьте пути файлов, которые будут превышать максимальную длину в будущей версии.
-
-# Получить расширение от пользователя
-extensionInput = input('Укажите расширение (например: .pdf): ').strip('.')
-
-# Получить исходную и целевую папку от пользователя
+# Get the directory from the user
 while True:
-    sourceInput = os.path.abspath(input('Введите путь к папке для копирования:\n'))
-    if os.path.exists(sourceInput):
-        break
+    userInput = input('Enter the directory to search:\n')
+    if userInput.lower() == 'quit':
+        sys.exit(1)
     else:
-        print('Путь некорректный. Попробуйте еще. Введите ctrl-c для выхода.')
-        continue
-while True:
-    destinationInput = os.path.abspath(input('Введите путь к папке назначения:\n'))
-    if os.path.exists(destinationInput):
-        break
-    else:
-        print('Путь некорректный. Попробуйте еще. Введите ctrl-c для выхода.')
-        continue
+        userInput = os.path.abspath(userInput)
+        if os.path.isdir(userInput):
+            break
+        else:
+            print('Invalid path. Please try again. Type "quit" to stop program.')
+            continue
 
-# Построить список путей к файлам для копирования
-copyList = []
-
-for foldername, subfolders, filenames in os.walk(sourceInput):
+# Walks the directory adds files to list after comparing.
+largeFiles = []
+number = 1
+for folder, subfolders, filenames in os.walk(userInput):
     for filename in filenames:
-        if str(filename).endswith(extensionInput):
-            copyList.append(os.path.join(foldername, filename))
+        if os.path.getsize(os.path.join(folder, filename)) > 100e6:
+            largeFiles.append((number,
+                               '{} MB'.format(round(os.path.getsize(os.path.join(folder, filename)) / 1e6, 0)),
+                               os.path.join(folder, filename)
+                               ))
+            number += 1
 
-# Перебирайте список движущихся файлов.
-print('Копирование этих файлов:')
-pprint.pprint(copyList, width=200)
-
-
-# Получить количество и размер всех файлов, которые будут скопированы (не требуется в описании проекта)
-totalSize = 0
-for file in copyList:
-    totalSize += os.path.getsize(file)
-print(str(len(copyList)) + ' файл(ов) будут скопированы. {} KB всего. Продолжить? [y/n]'.format(round(
-    totalSize/1000, 0
-)))
-confirmInput = input()
-
-if confirmInput.lower() in ['y', 'yes']:
-    # Скопируйте список файлов по назначению
-    for file in copyList:
-        shutil.copy(file, destinationInput)
-    print('Готово.')
-elif confirmInput.lower() in ['n', 'no']:
-    print('Отмена. Файлы не скопированы.')
-else:
-    print('Ввод не определен. Отмена операции.')
+for file in largeFiles:
+    print(file)
+print('Done.')
