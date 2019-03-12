@@ -1,5 +1,5 @@
 #! python3
-# fillinggaps.py - searches a directory for gaps in a numbering convention. Renames files after the gap
+# makinggaps.py - Creates a gap in file suffix number at user chosen integer.
 # to close the gap.
 
 import os
@@ -11,6 +11,16 @@ import shutil
 # Get prefix from user
 userPrefix = input('Enter prefix to search: ')
 
+# Get the gap number from user
+while True:
+    try:
+        userGap = int(input('Enter an integer for gap: '))
+    except ValueError:
+        print('That was not an integer. Try again.')
+        continue
+    if type(userGap) == int:
+        break
+
 
 # Create number suffix regex
 numRegex = re.compile('({})(?P<num>\\d+)(\\..*)'.format(userPrefix), re.IGNORECASE)
@@ -18,9 +28,9 @@ numRegex = re.compile('({})(?P<num>\\d+)(\\..*)'.format(userPrefix), re.IGNORECA
 # Get directory to search from user
 while True:
     searchPath = input('Enter the directory path to search:\n')
-    if searchPath.lower() == 'quit':
+    if searchPath.lower() == 'quit': 	# option to exit the program
         sys.exit(1)
-    else:
+    else:				# error handling
         searchPath = os.path.abspath(searchPath)
         if os.path.isdir(searchPath):
             break
@@ -42,13 +52,10 @@ fileList.sort(key=lambda pairs: pairs[0])   # to sort properly when number does 
 print('Matching files:')
 pprint.pprint(fileList)
 
-# Find the gap
+# Increment the file numbers for userGap and afterward by one
 for i, x in enumerate(fileList):
-    if i == 0:
-        continue
-    elif fileList[i][0] != (fileList[i-1][0] + 1):  # if the number does not come next in sequence
-        gap = fileList[i-1][0] + 1      # Assign the missing sequential number to variable: gap
-        fileList[i][0] = gap            # Replace out of sequence number with the missing number
+    if fileList[i][0] >= userGap:
+        fileList[i][0] += 1
 
 # Print to check the renumbered list
 print('Renumbered fileList:')
@@ -76,8 +83,10 @@ while True:
         continue
 
 # Rename the files
+# reversed() is used to prevent overwriting of the following file
+# while the loop is iterating.
 print('Renaming files...')
-for n in range(len(renamedFileList)):
+for n in reversed(range(len(renamedFileList))):
     shutil.move(os.path.join(searchPath, fileList[n][1]), os.path.join(searchPath, renamedFileList[n]))
 
 print('Done.')
