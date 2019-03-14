@@ -3,9 +3,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='myProgramLog.txt', level=logging.DEBUG,
+                    format=' %(asctime)s - %(levelname)s - %(message)s')
 
 logging.debug('Начало программы.')
+
 
 def factorial(n):
     logging.debug('Начало factorial(%s)' % (n))
@@ -15,6 +17,7 @@ def factorial(n):
         logging.debug('i = ' + str(i) + ', total = ' + str(total))
     logging.debug('Конец factorial(%s)' % (n))
     return total
+
 
 print(factorial(5))
 logging.debug('Конец программы.')
