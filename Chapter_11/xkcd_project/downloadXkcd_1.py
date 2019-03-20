@@ -5,7 +5,7 @@ import requests
 import os
 import bs4
 
-url = 'http://xkcd.com'  # начальный url-адрес
+url = 'https://acomics.ru/~rats-n-cats'  # начальный url-адрес
 os.makedirs('xkcd', exist_ok=True)  # сохраняем комикс в папке ./xkcd
 
 while not url.endswith('#'):
@@ -17,20 +17,20 @@ while not url.endswith('#'):
     soup = bs4.BeautifulSoup(res.text)
 
     # Поиск url-адреса изображения комикса.
-    comicElem = soup.select('#comic img')
+    comicElem = soup.select('#mainImage')
     if comicElem == []:
         print('Не удалось найти изображение комикса.')
     else:
         try:
-            comicUrl = 'http:' + comicElem[0].get('src')
+            comicUrl = 'https://acomics.ru/' + comicElem[0].get('src')
             # Загрузить изображение.
-            print('Загружается изображение %s...' % comicUrl)
+            print('Грузим картинку %s...' % comicUrl)
             res = requests.get(comicUrl)
             res.raise_for_status()
         except requests.exceptions.MissingSchema:
             # Пропустить этот комикс
-            prevLink = soup.select('a[rel="prev"]')[0]
-            url = 'http://xkcd.com' + prevLink.get('href')
+            prevLink = soup.select('#content div.serial-nomargin h3 a')[0]
+            url = prevLink.get('href')
             continue
 
     # Сохранение изображения в папке ./xkcd
@@ -40,7 +40,7 @@ while not url.endswith('#'):
     imageFile.close()
 
     # Получение url-адреса кнопки Prev.
-    prevLink = soup.select('a[rel="prev"]')[0]
-    url = 'http://xkcd.com' + prevLink.get('href')
+    prevLink = soup.select('#content div.serial-nomargin h3 a')[0]
+    url = prevLink.get('href')
 
 print('Готово.')
