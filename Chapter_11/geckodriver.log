@@ -7,3 +7,12 @@
 (firefox:20804): Gtk-WARNING **: 23:34:27.323: Theme parsing error: <data>:1:77: Expected ')' in color definition
 1553200469752	Marionette	INFO	Listening on port 39035
 1553200469803	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: http://inventwithpython.com/js/bootstrap.min.js, line 7: Error: Bootstrap tooltips require Tether (http://tether.io/)
+console.error: BroadcastService: 
+  receivedBroadcastMessage: handler for
+  remote-settings/monitor_changes
+  threw error:
+  Message: Error: Polling for changes failed: NetworkError when attempting to fetch resource..
+  Stack:
+    remoteSettingsFunction/remoteSettings.pollChanges@resource://services-settings/remote-settings.js:188:13
+
