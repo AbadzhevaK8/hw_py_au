@@ -1,4 +1,6 @@
 #! python3
+# coding=utf-8
+# -*- coding: utf-8 -*-
 # lucky.py - Открывает несколько результатов поиска с помощью Google.
 
 import requests
