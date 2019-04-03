@@ -13,3 +13,14 @@ for filename in os.listdir('.'):
 pdfFiles.sort(key=str.lower)
 
 pdfWriter = PyPDF2.PdfFileWriter()
+
+# организация цикла по всем пдфкам
+for filename in pdfFiles:
+    pdfFileObj = open(filename, 'rb')
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+    # оргинизация цикла по всем страницам, кроме первой, с их добавлением в результирующий документ
+    for pageNum in range(1, pdfReader.numPages):
+        pageObj = pdfReader.getPage(pageNum)
+        pdfWriter.addPage(pageObj)
+
+# TODO: сохранить результирующий документ в файл
