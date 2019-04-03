@@ -1,4 +1,4 @@
-#!python3
+  #!python3
 # combinePdfs.py - обьединяет все пдфки из одного каталога в один файл без титульных листов.
 
 import PyPDF2
@@ -23,4 +23,7 @@ for filename in pdfFiles:
         pageObj = pdfReader.getPage(pageNum)
         pdfWriter.addPage(pageObj)
 
-# TODO: сохранить результирующий документ в файл
+# сохранить результирующий документ в файл
+pdfOutput = open('allminutes.pdf', 'wb')
+pdfWriter.write(pdfOutput)
+pdfOutput.close()
