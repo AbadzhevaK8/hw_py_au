@@ -7,7 +7,7 @@ os.makedirs('xkcd', exist_ok=True) # сохраняем комиксы в пап
 
 def downloadXkcd(startComic, endComic):
     for urlNumber in range(startComic, endComic):
-        # загрузка старницы
+        # загрузка страницы
         print('Загрузка страницы http://xkcd.com/%s...' %(urlNumber))
         res = requests.get('http://xkcd.com/%s' %(urlNumber))
         res.raise_for_status()
@@ -30,3 +30,15 @@ def downloadXkcd(startComic, endComic):
             for chunk in res.iter_content(100000):
                 imageFile.wtite(chunk)
             imageFile.close()
+
+# создание и запуск объектов thread
+downloadThreads = [] # список всех объектов thread
+for i in range(0, 1400, 100): # 14 итераций, создающих 14 потоков
+    downloadThread = threading.Thread(target=downloadXkcd, args=(i, i + 99))
+    downloadThreads.append(downloadThread)
+    downloadThread.start()
+
+# ожидание завершения всех потоков
+for downloadThread in downloadThreads:
+    downloadThread.join()
+print('Готово.')
