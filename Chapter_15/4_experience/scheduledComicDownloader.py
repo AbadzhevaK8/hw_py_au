@@ -16,7 +16,7 @@ def get_comic(site_name, url):
     :param url: A full web address to the image to downloaded
     :return: none
     """
-    download_path = 'C:/Users/HOME4400/Desktop/comic_images'
+    download_path = './comic_images'
     image_name = os.path.basename(url)
     os.makedirs(os.path.abspath(download_path), exist_ok=True)
 
