@@ -4,17 +4,23 @@
 import os
 from PIL import Image
 
-SQUARE_FIT_SIZE = 300х300
+SQUARE_FIT_SIZE = 300
 LOGO_FILENAME = 'catlogo.png'
+
+os.makedirs('withLogo', exist_ok=True)
 
 logoIm = Image.open(LOGO_FILENAME)
 logoWidth, logoHeight = logoIm.size
 
-os.makedirs('withLogo', exist_ok=True)
+# resize to make logo 100px wide, height adjusted to keep aspect ratio
+logoIm = logoIm.resize((100, int(100 * (logoHeight / logoWidth))))
+# reassign now smaller width and height to variables
+logoWidth, logoHeight = logoIm.size
+
 # цикл по всем файлам в текущем рабочем каталоге
 for filename in os.listdir('.'):
-    if not (filename.endswith('.png') or \ filename.endswith('.jpg')) or filename == LOGO_FILENAME:
-        continue # пропустить файлы, не являющиеся файлами изображений и файл самого лого
+    if not (filename.endswith('.png') or filename.endswith('.jpg')) or filename == LOGO_FILENAME:
+        continue  # пропустить файлы, не являющиеся файлами изображений и файл самого лого
 
     im = Image.open(filename)
     width, height = im.size
@@ -32,3 +38,9 @@ for filename in os.listdir('.'):
         # изменение размеров изображения
         print('Изменение размеров изображения %s...' % (filename))
         im = im.resize((width, height))
+
+    # добавление логотипа
+    print('Добавление логотипа в изображение %s...' % (filename))
+    im.paste(logoIm, (width - logoWidth, height - logoHeight), logoIm)
+    # сохранение изменений
+    im.save(os.path.join('withLogo', filename))
